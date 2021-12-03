@@ -19,7 +19,6 @@ function prompt(question) {
     let pointer = 0;
     let labels = {};
     data.forEach((item, index) => {
-        console.log(pointer, item);
         switch (item[0]) {
             case '>':
                 pointer++;
@@ -33,7 +32,6 @@ function prompt(question) {
                 let label = item.replaceAll(/[{}]/g, '');
                 if (labels[label] || labels[label] == 0) {
                     let delta = pointer - labels[label];
-                    console.log(delta);
                     pointer = labels[label];
                     let r = ''
                     if (delta >= 1) {
@@ -56,9 +54,7 @@ function prompt(question) {
     let d2 = fs.readFileSync(file).toString().match(/[<>,\.\[\]\+-]|{[a-zA-Z0-9]*}/g);
     let currentLabel = 0;
     let labelsDone = [];
-    console.log(data);
     data = data.filter(item => item != '');
-    console.log(data);
     d2.forEach((item, index) => {
         if (item[0] == '{' && labelsDone.includes(item)) {
             d2[index] = data[currentLabel];
@@ -70,4 +66,5 @@ function prompt(question) {
     });
     let merged = d2.join('');
     fs.writeFileSync(`parsed${file}`, merged);
+    process.exit();
 })();

@@ -101,6 +101,7 @@ function prompt(question) {
             }
             cmdPointer++;
         }
+        process.exit();
     } else {
         console.log('File does not exist');
         process.exit(1);
