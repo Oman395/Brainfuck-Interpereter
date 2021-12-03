@@ -18,12 +18,13 @@ function prompt(question) {
     args = args.split(',');
     if (fs.existsSync(file)) {
         let data = fs.readFileSync(file, 'utf8');
-        let split = data.toString().match(/[<>,\.\[\]\+-]/g);
+        let split = data.toString().match(/[<>,\.\[\]\+-]|{[a-zA-Z0-9]*}/g);
         let parsed = [];
         let depth = 0;
+        let labels = {};
         split.forEach((char, index) => {
-            parsed[index] = {command: char, depth: depth};
-            switch(char) {
+            parsed[index] = { command: char, depth: depth };
+            switch (char[0]) {
                 case '[':
                     depth++;
                     break;
@@ -39,8 +40,13 @@ function prompt(question) {
                     }
                     parsed[index].origin = open;
                     break;
+                case '{':
+                    // Label
+                    let label = char.replaceAll(/[{}]/g, '');
+                    parsed[index].label = label;
+                    break;
             }
-            if(index == split.length - 1) {
+            if (index == split.length - 1) {
                 parsed[index].end = true;
             }
         });
@@ -51,8 +57,8 @@ function prompt(question) {
         let running = true;
         while (running) {
             let cmd = parsed[cmdPointer];
-            if(!mem[pointer]) mem[pointer] = 0;
-            switch(cmd.command) {
+            if (!mem[pointer]) mem[pointer] = 0;
+            switch (cmd.command[0]) {
                 case '<':
                     pointer--;
                     break;
@@ -73,13 +79,20 @@ function prompt(question) {
                     argsPointer++;
                     break;
                 case '[':
-                    if (mem[pointer] === 0) {
+                    if (mem[pointer] <= 0) {
                         cmdPointer = cmd.endLoc;
                     }
                     break;
                 case ']':
-                    if (mem[pointer] !== 0) {
+                    if (mem[pointer] > 0) {
                         cmdPointer = cmd.origin;
+                    }
+                    break;
+                case '{':
+                    if (labels[cmd.label] || labels[cmd.label] == 0) {
+                        pointer = labels[cmd.label];
+                    } else {
+                        labels[cmd.label] = pointer;
                     }
                     break;
             }
