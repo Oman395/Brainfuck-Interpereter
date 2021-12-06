@@ -1,6 +1,5 @@
-*.bf
-*.*bf
 compile.*
 ^ Testing something
 cpu.*
 ^ Same here
+./*.bf

@@ -1,0 +1,37 @@
+{TGT},>{EXP},>{RES}>{CPY1}>{CPY2}
+{TGT}
+[
+    {CPY1}+
+    {CPY2}+
+    {TGT}-
+]
+{CPY2}
+[
+    {TGT}+
+    {CPY2}-
+]
+{EXP}-
+[
+    {TGT}
+    [
+        {CPY1}
+        [
+            {RES}+
+            {CPY2}+
+            {CPY1}-
+        ]
+        {CPY2}
+        [
+            {CPY1}+
+            {CPY2}-
+        ]
+        {TGT}-
+    ]
+    {RES}
+    [
+        {TGT}+
+        {RES}-
+    ]
+    {EXP}-
+]
+{TGT}.
