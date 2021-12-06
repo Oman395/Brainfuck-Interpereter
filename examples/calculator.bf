@@ -1,14 +1,14 @@
-{ADD},>{SUB},>{MULT},>{DIV},>{ONE},>{ONECPY}>${TWO},>{TWOCPY}>{RESULT}>{ZERO}>{1}>{REMAINDER}
-{ADD}
+{ADD},>{SUB},>{MULT},>{DIV},>{ONE},>{ONECPY}>${TWO},>{TWOCPY}>{RESULT}>{ZERO}>{1}>{REMAINDER} Set variables
+{ADD} Adding mode
 [
-    {TWO}
+    {TWO} Add input two to result
     [
         {RESULT}
-        +
+        + Add to result
         {TWO}
-        -
+        - Subtract from input two
     ]
-    {ONE}
+    {ONE} Same but for one
     [
         {RESULT}
         +
@@ -18,8 +18,8 @@
     {ADD}
     -
 ]
-{SUB}
-[
+{SUB} Subtracting mode
+[ Literally the exact same as adding but with subtraction
     {ONE}
     [
         {RESULT}
@@ -37,20 +37,20 @@
     {SUB}
     -
 ]
-{MULT}
+{MULT} Multiplying mode
 [
     {ONE}
-    [
+    [ Loop for input one
         {TWO}
-        [
+        [ Loop for two
             {RESULT}
-            +
+            + Add two result
             {TWOCPY}
-            +
+            + Add to two copy
             {TWO}
-            -
+            - Subtract from two
         ]
-        {TWOCPY}
+        {TWOCPY} Move two copy to two and set two copy to zero
         [
             {TWO}
             +
@@ -58,12 +58,12 @@
             -
         ]
         {ONE}
-        -
+        - Subtract from one
     ]
     {MULT}
-    -
+    - End Multiplying
 ]
-{DIV}
+{DIV} Dividing mode
 [ Imma explain this shit here b/c its fucked tbh
     {ONE} Copy one to onecpy its a surprise tool that will help us later
     i bugged it for a moment by accidentally using a comma lol
@@ -117,6 +117,3 @@
 {RESULT}.
 {REMAINDER}. the only real limitation to this code is that when the divide function is presented with something like 4 / 4 it returns 0 remainder 4
 i cant be assed fixing it it took long enough to write as is
-
-<<>><<>> this isnt anything
-test { this doesnt close
