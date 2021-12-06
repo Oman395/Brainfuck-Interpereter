@@ -6,13 +6,23 @@ My interpereter supports labels, which are used with the syntax {label}. When yo
 
 ## Brainfuck itself
 ### Brainfuck is fairly simple, but here's a list of commands.
+
 \> - Increment memory pointer
+
 < - Decrement memory pointer
+
 \+ - Increment memory at pointer
+
 \- - Decrement memory at pointer
+
 . - Output memory at pointer
+
 , - Set memory at pointer to current argument. Arguments are stored as an array, with a pointer-- Each is simply split by ',' when the program is run.
+
 [ - Open loop. If memory at pointer is <= 0 when you reach this, it skips to the end.
+
 ] - Close loop. If memory at pointer is not <= 0, go back to open. Otherwise, continue.
+
 ### Custom commands
+
 {} - Label. See above.
