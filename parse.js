@@ -1,5 +1,7 @@
 import fs from 'fs';
 const stdin = process.stdin;
+// The only real caveat to this program is that the opening declaration arrows are not removed. Mostly b/c that would
+// prob cause a lot of issues. So the resulting vanilla BF isn't perfect. Oh well!
 
 function prompt(question) {
     return new Promise((resolve) => {
@@ -93,5 +95,6 @@ function prompt(question) {
         }
     });
     fs.writeFileSync(`parsed${file}`, raw);
+    console.log('Done!');
     process.exit(); // Too lazy to stop stdin, this works so eh
 })();

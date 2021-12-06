@@ -17,8 +17,26 @@ function prompt(question) {
     if (fs.existsSync(file)) {
         let args = await prompt('Enter arguments, seperated by a comma: ')
         args = args.split(',');
-        let data = fs.readFileSync(file, 'utf8');
-        let split = data.toString().match(/[<>,\.\[\]\+-]|{[a-zA-Z0-9]*}/g);
+        let data = fs.readFileSync(file, 'utf8').toString();
+        if (data.match(/{[^}]*\n/)) {
+            let val = data.match(/{[^}]*\n/)[0];
+            let loc = data.indexOf(val);
+            let rowPos = data.slice(0, loc).split('\n').length - 1;
+            let row = data.split('\n')[rowPos];
+            let string = `Hanging label declaration at row ${rowPos}: 
+${data.split('\n')[rowPos - 1].replaceAll(/$[ \t\r]*/g, '')}
+${data.split('\n')[rowPos]}\n`;
+            for (let i = 0; i < row.length; i++) {
+                if (row[i] == '{') {
+                    i = row.length;
+                } else {
+                    string += ' ';
+                }
+            }
+            string += '^';
+            throw new Error(string);
+        }
+        let split = data.match(/[<>,\.\[\]\+-]|{[a-zA-Z0-9]*}/g);
         let parsed = [];
         let depth = 0;
         let labels = {};
@@ -81,7 +99,7 @@ function prompt(question) {
         let pointer = 0;
         let cmdPointer = 0;
         let argsPointer = 0;
-        let running = true; 
+        let running = true;
         // This is the main loop for the entire thing. It does whatever the command makes it do.
         while (running) {
             let cmd = parsed[cmdPointer];
@@ -103,10 +121,10 @@ function prompt(question) {
                     console.log(mem[pointer]);
                     break;
                 case ',': // This one needs a bit more explanation. It gets the current argument that is open,
-                // and sets the mem at pointer to it. It then increments the arg pointer, so we can get diff 
-                // args for the others.
-                // I'd just wait for user input, but brainfuck only accepts input at the start (as defined), so
-                // Here we are. No real difference honestly, but eh, i want it to be faithful.
+                    // and sets the mem at pointer to it. It then increments the arg pointer, so we can get diff 
+                    // args for the others.
+                    // I'd just wait for user input, but brainfuck only accepts input at the start (as defined), so
+                    // Here we are. No real difference honestly, but eh, i want it to be faithful.
                     mem[pointer] = args[argsPointer] || args[args.length - 1];
                     argsPointer++;
                     break;
